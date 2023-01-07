@@ -1,5 +1,7 @@
 from django.db import models
 from datetime import datetime
+from ckeditor.fields import RichTextField
+from multiselectfield import MultiSelectField
 # Create your models here.
 
 class Car(models.Model):
@@ -94,26 +96,30 @@ class Car(models.Model):
     color=models.CharField(max_length=255)
 
     model=models.CharField(max_length=255)
-    year=models.ImageField(('year'),choices=year_choice)
+    year=models.IntegerField(choices=year_choice,max_length=100)
     condition=models.CharField(max_length=255)
-    price=models.IntegerField(choices=door_choices)
-    description=models.TextField(max_length=500)
-    car_photo=models.CharField(upload_to='photos/%Y/%m/%d/')
-    car_photo_1=models.CharField(upload_to='photos/%Y/%m/%d/',blank=True)
-    car_photo_2=models.CharField(upload_to='photos/%Y/%m/%d/',blank=True)
-    car_photo_3=models.CharField(upload_to='photos/%Y/%m/%d/',blank=True)
-    car_photo_4=models.CharField(upload_to='photos/%Y/%m/%d/',blank=True)
-    features=models.CharField(choices=features_choices,max_length=100)
-    body_style=models.CharField(max_length=255)
-    engine=models.CharField(max_length=255)
-    transmision=models.CharField(max_length=255)
-    interior=models.CharField(max_length=255)
+    price=models.IntegerField()
+    description=RichTextField()
+    car_photo=models.ImageField(upload_to='photos/%Y/%m/%d/')
+    car_photo_1=models.ImageField(upload_to='photos/%Y/%m/%d/',blank=True)
+    car_photo_2=models.ImageField(upload_to='photos/%Y/%m/%d/',blank=True)
+    car_photo_3=models.ImageField(upload_to='photos/%Y/%m/%d/',blank=True)
+    car_photo_4=models.ImageField(upload_to='photos/%Y/%m/%d/',blank=True)
+    # features=MultiSelectField(choices=features_choices)
+    body_style=models.CharField(max_length=100)
+    engine=models.CharField(max_length=100)
+    transmision=models.CharField(max_length=100)
+    interior=models.CharField(max_length=100)
     miles=models.IntegerField()
-    doors=models.IntegerField(choices=door_choices)
+    doors=models.CharField(choices=door_choices,max_length=10)
     passengers=models.IntegerField()
-    vic_no=models.CharField(max_length=255)
+    vic_no=models.CharField(max_length=100)
     milage=models.IntegerField()
-    fuel_type=models.CharField(max_length=255)
+    fuel_type=models.CharField(max_length=50)
     no_of_owners=models.IntegerField()
-    is_featured=models.BooleanField()
+    is_featured=models.BooleanField(default=False)
     created_date=models.DateTimeField(default=datetime.now(),blank=True)
+    
+    def __str__(self):
+        return self.car_title
+    
